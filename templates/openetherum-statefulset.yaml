@@ -86,9 +86,9 @@ spec:
         requests:
           storage: {{ .persistent.size }}
   {{- else }}
-  volumes:
-  - name: data
-    emptyDir: {}
+      volumes:
+      - name: data
+        emptyDir: {}
   {{- end }}
 
 {{- end }}
