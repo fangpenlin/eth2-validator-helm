@@ -36,7 +36,8 @@ Common labels
 */}}
 {{- define "eth2-validator.labels" -}}
 helm.sh/chart: {{ include "eth2-validator.chart" . }}
-{{ include "eth2-validator.selectorLabels" . }}
+app.kubernetes.io/name: {{ include "eth2-validator.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -44,20 +45,12 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Selector labels
-*/}}
-{{- define "eth2-validator.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "eth2-validator.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
-
-{{/*
 Create the name of the service account to use
 */}}
-{{- define "eth2-validator.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-    {{ default (include "eth2-validator.fullname" .) .Values.serviceAccount.name }}
+{{- define "eth2-validator.openethereumServiceAccountName" -}}
+{{- if .Values.openethereumServiceAccount.create -}}
+    {{ default (printf "%s-openethereum" (include "eth2-validator.fullname" .)) .Values.openethereum.serviceAccount.name }}
 {{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
+    {{ default "default" .Values.openethereum.serviceAccount.name }}
 {{- end -}}
 {{- end -}}

@@ -1,55 +1,73 @@
+{{- $root := . }}
+
+{{- with .Values.openethereum }}
+{{- if .enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "eth2-validator.fullname" . }}
+  name: {{ $root.Release.Name }}-openethereum
   labels:
-    {{- include "eth2-validator.labels" . | nindent 4 }}
+    {{- include "eth2-validator.labels" $root | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.openethereum.replicaCount }}
   selector:
     matchLabels:
-      {{- include "eth2-validator.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ .Release.Name }}-openethereum
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        {{- include "eth2-validator.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ .Release.Name }}-openethereum
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-    {{- with .Values.imagePullSecrets }}
+    {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "eth2-validator.serviceAccountName" . }}
+      serviceAccountName: {{ include "eth2-validator.serviceAccountName" $root }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ $root.Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          args: [
+            "--chain", {{ .network }},
+            "--jsonrpc-interface=all",
+            "--metrics",
+            "--metrics-interface=all",
+            "--base-path=/var/data/"
+          ]
           ports:
-            - name: http
-              containerPort: 80
+            - name: jsonrpc
+              containerPort: 8545
+              protocol: TCP
+            - name: metrics
+              containerPort: 3000
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /metrics
+              port: metrics
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /metrics
+              port: metrics
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .resources | nindent 12 }}
+      {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+{{- end }}
+{{- end }}

@@ -2,12 +2,18 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-openetherum:
+openethereum:
+  enabled: true
+
   replicaCount: 1
 
   image:
-    repository: nginx
+    repository: openethereum/openethereum
+    tag: v3.1.0
     pullPolicy: IfNotPresent
+
+  # The network to connect to
+  network: goerli
 
   imagePullSecrets: []
   nameOverride: ""
