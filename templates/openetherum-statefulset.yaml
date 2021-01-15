@@ -9,22 +9,23 @@ metadata:
   labels:
     {{- include "eth2-validator.labels" $root | nindent 4 }}
 spec:
-  replicas: {{ .Values.openethereum.replicaCount }}
+  replicas: {{ .replicaCount }}
+  serviceName: {{ $root.Release.Name }}-openethereum
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Release.Name }}-openethereum
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+      app.kubernetes.io/instance: {{ $root.Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ .Release.Name }}-openethereum
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+        app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "eth2-validator.serviceAccountName" $root }}
+      serviceAccountName: {{ include "eth2-validator.openethereum.serviceAccountName" $root }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
       containers:
