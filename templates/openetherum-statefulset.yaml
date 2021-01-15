@@ -1,7 +1,7 @@
 {{- $root := . }}
 
 {{- with .Values.openethereum }}
-{{- if .enabled -}}
+{{- if .enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -58,6 +58,9 @@ spec:
               port: metrics
           resources:
             {{- toYaml .resources | nindent 12 }}
+          volumeMounts:
+          - name: data
+            mountPath: /var/data
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -70,5 +73,19 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+  
+  {{- if .persistent.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        {{- toYaml .persistent.accessModes | nindent 8 }}
+      storageClassName: {{ .persistent.storageClassName }}
+      resources:
+        requests:
+          storage: {{ .persistent.size }}
+  {{- end }}
+
 {{- end }}
 {{- end }}

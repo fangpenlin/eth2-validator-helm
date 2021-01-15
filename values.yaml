@@ -5,6 +5,12 @@
 openethereum:
   enabled: true
 
+  persistent:
+    enabled: true
+    accessModes: [ "ReadWriteOnce" ]
+    size: 256Gi
+    storageClassName: default
+
   replicaCount: 1
 
   image:
