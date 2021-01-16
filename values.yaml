@@ -9,7 +9,7 @@ openethereum:
     enabled: true
     accessModes: [ "ReadWriteOnce" ]
     size: 256Gi
-    storageClassName: default
+    storageClassName: standard
 
   replicaCount: 1
 
