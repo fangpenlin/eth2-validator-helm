@@ -65,3 +65,14 @@ Create the name of the service account to use
     {{ default "default" .Values.beacon.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "eth2-validator.validator.serviceAccountName" -}}
+{{- if .Values.validator.serviceAccount.create -}}
+    {{ default (printf "%s-validator" (include "eth2-validator.fullname" .)) .Values.validator.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.validator.serviceAccount.name }}
+{{- end -}}
+{{- end -}}

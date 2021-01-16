@@ -1,31 +1,31 @@
 {{- $root := . }}
 
-{{- with .Values.openethereum }}
+{{- with .Values.validator }}
 {{- if .enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ $root.Release.Name }}-openethereum
+  name: {{ $root.Release.Name }}-validator
   labels:
     {{- include "eth2-validator.labels" $root | nindent 4 }}
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ $root.Release.Name }}-openethereum
+  serviceName: {{ $root.Release.Name }}-validator
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+      app.kubernetes.io/name: {{ $root.Release.Name }}-validator
       app.kubernetes.io/instance: {{ $root.Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+        app.kubernetes.io/name: {{ $root.Release.Name }}-validator
         app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "eth2-validator.openethereum.serviceAccountName" $root }}
+      serviceAccountName: {{ include "eth2-validator.validator.serviceAccountName" $root }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
       containers:
@@ -34,24 +34,29 @@ spec:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
-          args:
-            {{- $args := append (concat .defaultArgs .extraArgs) (printf "--chain=%s" .network) }}
-            {{- toYaml $args | nindent 12 }}
+          args: [
+            "lighthouse",
+            "--datadir", "/var/data",
+            "validator",
+            "--network", {{ .network | quote }},
+            "--beacon-nodes", {{ .beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name) | quote }},
+            "--metrics-address", "0.0.0.0",
+          ]
           ports:
-            - name: jsonrpc
-              containerPort: 8545
+            - name: http
+              containerPort: 5052
               protocol: TCP
             - name: metrics
-              containerPort: 3000
+              containerPort: 5064
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-          readinessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
+          # livenessProbe:
+          #   httpGet:
+          #     path: /metrics
+          #     port: metrics
+          # readinessProbe:
+          #   httpGet:
+          #     path: /metrics
+          #     port: metrics
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:
