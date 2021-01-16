@@ -39,6 +39,10 @@ spec:
             "--datadir", "/var/data",
             "beacon",
             "--network", {{ .network | quote }},
+            # Needs smaller query size otherwise third-party eth1 endpoint like infura will
+            # return response too big error
+            # ref: https://github.com/prysmaticlabs/prysm/issues/7827
+            "--eth1-blocks-per-log-query", "100",
             "--eth1-endpoints", {{ .eth1Endpoints | default (printf "http://%s-openethereum:8545" $root.Release.Name) | quote }},
             "--staking",
             "--http-address", "0.0.0.0",
