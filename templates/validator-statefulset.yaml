@@ -34,14 +34,9 @@ spec:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
-          args: [
-            "lighthouse",
-            "--datadir", "/var/data",
-            "validator",
-            "--network", {{ .network | quote }},
-            "--beacon-nodes", {{ .beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name) | quote }},
-            "--metrics-address", "0.0.0.0",
-          ]
+          args:
+            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--beacon-nodes" (.beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name))) }}
+            {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
               containerPort: 5052
@@ -49,14 +44,14 @@ spec:
             - name: metrics
               containerPort: 5064
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /metrics
-          #     port: metrics
-          # readinessProbe:
-          #   httpGet:
-          #     path: /metrics
-          #     port: metrics
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:

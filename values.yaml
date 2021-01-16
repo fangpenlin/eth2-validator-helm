@@ -79,6 +79,7 @@ beacon:
     "--datadir", "/var/data",
     "beacon",
     "--staking",
+    "--metrics",
     "--http-address", "0.0.0.0",
     "--metrics-address", "0.0.0.0",
   ]
@@ -144,6 +145,15 @@ beacon:
 
 validator:
   enabled: true
+
+  defaultArgs: [
+    "lighthouse",
+    "--datadir", "/var/data",
+    "validator",
+    "--metrics",
+    "--metrics-address", "0.0.0.0",
+  ]
+  extraArgs: []
 
   persistent:
     enabled: true

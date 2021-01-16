@@ -44,14 +44,20 @@ spec:
             - name: metrics
               containerPort: 5054
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /metrics
-          #     port: metrics
-          # readinessProbe:
-          #   httpGet:
-          #     path: /metrics
-          #     port: metrics
+            - name: p2p-tcp
+              containerPort: 9000
+              protocol: TCP
+            - name: p2p-udp
+              containerPort: 9000
+              protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:
