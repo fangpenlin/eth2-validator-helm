@@ -74,6 +74,16 @@ openethereum:
 beacon:
   enabled: true
 
+  defaultArgs: [
+    "lighthouse",
+    "--datadir", "/var/data",
+    "beacon",
+    "--staking",
+    "--http-address", "0.0.0.0",
+    "--metrics-address", "0.0.0.0",
+  ]
+  extraArgs: []
+
   persistent:
     enabled: true
     accessModes: [ "ReadWriteOnce" ]

@@ -35,7 +35,7 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := append (concat .defaultArgs .extraArgs) (printf "--chain=%s" .network) }}
+            {{- $args := concat .defaultArgs .extraArgs (list "--chain" .network) }}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: jsonrpc
