@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-beacon
+  labels:
+    {{- include "eth2-validator.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.beacon.service.type }}
+  ports:
+    - port: 5052
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}-beacon
+    app.kubernetes.io/instance: {{ .Release.Name }}

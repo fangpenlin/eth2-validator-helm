@@ -54,3 +54,14 @@ Create the name of the service account to use
     {{ default "default" .Values.openethereum.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "eth2-validator.beacon.serviceAccountName" -}}
+{{- if .Values.beacon.serviceAccount.create -}}
+    {{ default (printf "%s-beacon" (include "eth2-validator.fullname" .)) .Values.beacon.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.beacon.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
