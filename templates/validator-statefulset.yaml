@@ -28,31 +28,25 @@ spec:
       serviceAccountName: {{ include "eth2-validator.validator.serviceAccountName" $root }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
-      {{- if .secretName }}
       initContainers:
-        - name: import-keystore
-          securityContext:
-            {{- toYaml .securityContext | nindent 12 }}
-          image: "{{ .image.repository }}:{{ .image.tag }}"
-          imagePullPolicy: {{ .image.pullPolicy }}
-          command: ["/bin/bash", "-c"]
+        - name: copy-keystore
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          # Copy keystore files based on what's described in the auto discovery feature doc
+          # ref: https://lighthouse-book.sigmaprime.io/validator-management.html?highlight=--secrets-dir#populating-the-validator_definitionsyml-file
           args:
           - |
             set -e
-            set -o pipefail
-            cat "\n" | \
-              lighthouse account validator import \
-              --network {{ .network | quote }}
-              --datadir /var/data \
-              --directory /var/secret \
-              --stdin-inputs
+            cd /var/data/keystores/
+            for name in *.json; do
+              mkdir /var/data/validators/imported/${name}
+              cp $name /var/data/validators/imported/${name}/voting-keystore.json
+            done
           volumeMounts:
-          - name: data
-            mountPath: /var/data
-          - name: secret
-            mountPath: /var/secret
-            readOnly: true
-      {{- end }}
+          - name: keystores
+            mountPath: /var/data/keystores
+          - name: imported-keystores
+            mountPath: /var/data/validators/imported
       containers:
         - name: validator
           securityContext:
@@ -61,9 +55,6 @@ spec:
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
             {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--beacon-nodes" (.beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name))) }}
-            {{- if .secretName }}
-            {{- $args = concat $args (list "--secrets-dir" "/var/secrets") }}
-            {{- end }}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
@@ -91,11 +82,11 @@ spec:
           volumeMounts:
           - name: data
             mountPath: /var/data
-          {{- if .secretName }}
-          - name: secret
-            mountPath: /var/secret
+          - name: imported-keystores
+            mountPath: /var/data/validators/imported
+          - name: passwords
+            mountPath: /var/data/secrets
             readOnly: true
-          {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -109,17 +100,17 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
+      - name: imported-keystores
+        emptyDir: {}
+      - name: keystores
+        secret:
+          secretName: {{ .keystoreSecretName }}
+      - name: passwords
+        secret:
+          secretName: {{ .passwordSecretName }}
     {{- if not .persistent.enabled }}
       - name: data
         emptyDir: {}
-    {{- end }}
-    {{- with .secretName }}
-      - name: secret
-        secret:
-          secretName: {{ . | quote }}
-    {{- end }}
-    {{- if and .persistent.enabled (not .secretName) }}
-        []
     {{- end }}
  
   {{- if .persistent.enabled }}

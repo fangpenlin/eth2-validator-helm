@@ -163,7 +163,8 @@ beacon:
 validator:
   enabled: true
 
-  secretName: ""
+  keystoreSecretName: "eth2-validator-keystore"
+  passwordSecretName: "eth2-validator-password"
 
   defaultArgs: [
     "lighthouse",
