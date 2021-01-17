@@ -44,6 +44,18 @@ spec:
             - name: metrics
               containerPort: 3000
               protocol: TCP
+            - name: p2p-tcp
+              containerPort: 30303
+              protocol: TCP
+              {{- if .hostPort.enabled }}
+              hostPort: 30303
+              {{- end }}
+            - name: p2p-udp
+              containerPort: 30303
+              protocol: UDP
+              {{- if .hostPort.enabled }}
+              hostPort: 30303
+              {{- end }}
           livenessProbe:
             httpGet:
               path: /metrics

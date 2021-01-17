@@ -54,9 +54,13 @@ openethereum:
     enabled: true
     type: ClusterIP
 
-  externalService:
+  hostPort:
+    # When hostPort is enabled, the 30303 p2p ports for TCP/UDP will be open on the node where
+    # the pod lives. As a result, you won't be able to run two instances of openethereum
+    # on the same node. In that case, you would probably want to use affinity to avoid
+    # schedule two of them on the same host. Also, you need to configure your network firewall
+    # rule to allow 30303 port access
     enabled: true
-    type: LoadBalancer
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
