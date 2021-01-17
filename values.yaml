@@ -49,6 +49,7 @@ openethereum:
       - ALL
     readOnlyRootFilesystem: true
     runAsUser: 1000
+    runAsGroup: 1000
 
   service:
     enabled: true
@@ -130,6 +131,7 @@ beacon:
       - ALL
     readOnlyRootFilesystem: true
     runAsUser: 1000
+    runAsGroup: 1000
 
   service:
     type: NodePort
@@ -211,6 +213,7 @@ validator:
       - ALL
     readOnlyRootFilesystem: true
     runAsUser: 1000
+    runAsGroup: 1000
 
   service:
     enabled: true

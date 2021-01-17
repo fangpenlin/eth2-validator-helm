@@ -30,6 +30,8 @@ spec:
         {{- toYaml .podSecurityContext | nindent 8 }}
       initContainers:
         - name: copy-keystore
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
           image: busybox
           command: ["/bin/sh", "-c"]
           # Copy keystore files based on what's described in the auto discovery feature doc
