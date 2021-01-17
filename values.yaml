@@ -163,6 +163,8 @@ beacon:
 validator:
   enabled: true
 
+  secretName: ""
+
   defaultArgs: [
     "lighthouse",
     "--datadir", "/var/data",

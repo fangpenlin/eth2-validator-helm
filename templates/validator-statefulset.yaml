@@ -75,7 +75,20 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-  
+      volumes:
+    {{- if not .persistent.enabled }}
+      - name: data
+        emptyDir: {}
+    {{- end }}
+    {{- with .secretName }}
+      - name: secret
+        secret:
+          secretName: {{ . | quote }}
+    {{- end }}
+    {{- if and .persistent.enabled (not .secretName) }}
+        []
+    {{- end }}
+ 
   {{- if .persistent.enabled }}
   volumeClaimTemplates:
   - metadata:
@@ -87,10 +100,6 @@ spec:
       resources:
         requests:
           storage: {{ .persistent.size }}
-  {{- else }}
-      volumes:
-      - name: data
-        emptyDir: {}
   {{- end }}
 
 {{- end }}
