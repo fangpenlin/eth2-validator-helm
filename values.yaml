@@ -51,7 +51,12 @@ openethereum:
     runAsUser: 1000
 
   service:
+    enabled: true
     type: ClusterIP
+
+  externalService:
+    enabled: true
+    type: LoadBalancer
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -123,7 +128,15 @@ beacon:
     runAsUser: 1000
 
   service:
-    type: ClusterIP
+    type: NodePort
+
+  hostPort:
+    # When hostPort is enabled, the 9000 p2p ports for TCP/UDP will be open on the node where
+    # the pod lives. As a result, you won't be able to run two instances of beacon
+    # on the same node. In that case, you would probably want to use affinity to avoid
+    # schedule two of them on the same host. Also, you need to configure your network firewall
+    # rule to allow 9000 port access
+    enabled: true
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -193,6 +206,7 @@ validator:
     runAsUser: 1000
 
   service:
+    enabled: true
     type: ClusterIP
 
   resources: {}

@@ -47,9 +47,15 @@ spec:
             - name: p2p-tcp
               containerPort: 9000
               protocol: TCP
+              {{- if .hostPort.enabled }}
+              hostPort: 9000
+              {{- end }}
             - name: p2p-udp
               containerPort: 9000
               protocol: UDP
+              {{- if .hostPort.enabled }}
+              hostPort: 9000
+              {{- end }}
           livenessProbe:
             httpGet:
               path: /metrics
