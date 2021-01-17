@@ -28,14 +28,42 @@ spec:
       serviceAccountName: {{ include "eth2-validator.validator.serviceAccountName" $root }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
+      {{- if .secretName }}
+      initContainers:
+        - name: import-keystore
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          command: ["/bin/bash", "-c"]
+          args:
+          - |
+            set -e
+            set -o pipefail
+            cat "\n" | \
+              lighthouse account validator import \
+              --network {{ .network | quote }}
+              --datadir /var/data \
+              --directory /var/secret \
+              --stdin-inputs
+          volumeMounts:
+          - name: data
+            mountPath: /var/data
+          - name: secret
+            mountPath: /var/secret
+            readOnly: true
+      {{- end }}
       containers:
-        - name: {{ $root.Chart.Name }}
+        - name: validator
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
             {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--beacon-nodes" (.beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name))) }}
+            {{- if .secretName }}
+            {{- $args = concat $args (list "--secrets-dir" "/var/secrets") }}
+            {{- end }}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
@@ -63,6 +91,11 @@ spec:
           volumeMounts:
           - name: data
             mountPath: /var/data
+          {{- if .secretName }}
+          - name: secret
+            mountPath: /var/secret
+            readOnly: true
+          {{- end }}
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
