@@ -66,7 +66,7 @@ Likewise, if you have more than one validator to run, you can apply `--from-file
 
 ## Install
 
-To install, you could run
+To install this Helm chart, you could run
 
 ```bash
 helm repo add fangpen https://raw.githubusercontent.com/fangpenlin/helm-repo/master/
