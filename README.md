@@ -13,7 +13,7 @@ Please be advised that you should be fully aware of the risks of running a ETH2 
 
 ## Install validator keystore and password
 
-**WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validator once it's available**
+**WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validators once it's available**
 
 To run ETH2 validator in a Kubernete cluster with this Helm chart, you will need to install your keystore into the Kubernete cluster first. By default, two Secrets `eth2-validator-keystore` and `eth2-validator-password` are used for keeping the secret data. For example, say you just created a keystore with eth2deposit cli command, and the file structure looks like this
 
