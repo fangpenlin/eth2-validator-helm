@@ -95,7 +95,7 @@ While making your P2P connection ports available to public internet is not a har
 - OpenEthereum: 9000 TCP/UDP
 - Lighthouse Beacon: 30303 TCP/UDP
 
-Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `openethereum.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you want to open these ports on nodes or you wish to use other approach for opening the ports, such as an external LoadBalancer.
+Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `openethereum.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you don't want to open these ports on node or you wish to use other approach for opening the ports, such as an external LoadBalancer.
 
 ## Configurations
 
