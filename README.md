@@ -1,5 +1,5 @@
 # eth2-validator-helm
-Helm Chart for running ETH2 validator with OpenEthereum + Lighthouse on Kubernete cluster under MIT license.
+Helm Chart for running [ETH2 validator](https://ethereum.org/en/eth2/staking/) with [OpenEthereum](https://openethereum.org/) + [Lighthouse](https://lighthouse.sigmaprime.io/) on Kubernete cluster under MIT license.
 
 ## Donation
 
