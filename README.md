@@ -81,15 +81,36 @@ helm install eth2-validator fangpen/eth2-validator
 
 ## Configurations
 
-There are three components to be deployed with this Helm chart, they can be configured individually.
+There are three components to be deployed with this Helm chart, they can be configured individually. Please check [values.yaml](values.yaml) for the default values.
 
 ### OpenEthereum
 
 OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a third-party ETH1 provider, you can probably disable it. The configuration of OpenEthereum component is all under `openethereum` key.
 
-| Key                    | Usage                                          |
-|------------------------|------------------------------------------------|
-| enabled                | Enable component or not                        |
+| Key                         | Usage                                               |
+|-----------------------------| --------------------------------------------------- |
+| **enabled**                 | Enable component or not                             |
+| **defaultArgs**             | Default argument for running openethereum command   |
+| **extraArgs**               | Extra argument for running openethereum command     |
+| **persistent.enabled**      | Enable data persistent or not                       |
+| **persistent.accessModes**  | Access mode for PersistentVolume                    |
+| **persistent.size**         | Size of PersistentVolume                            |
+| **replicaCount**            | Replica count of deploymen                          |
+| **image.repository**        | Docker image repo                                   |
+| **image.tag**               | Docker image tag                                    |
+| **image.pullPolicy**        | Docker image polling policy                         |
+| **network**                 | ETH network to connect to                           |
+| **imagePullSecrets**        | Image polling secret                                |
+| **serviceAccount.create**   | Create service account or not                       |
+| **serviceAccount.name**     | Name of service account if not using default        |
+| **podSecurityContext**      | Security group for pod                              |
+| **securityContext**         | Security context                                    |
+| **service.enabled**         | Enable Service or not                               |
+| **hostPort.enabled**        | Expose P2P ports or not                             |
+| **resources**               | Resource requirement and limitation                 |
+| **nodeSelector**            | Node selector for pods                              |
+| **tolerations**             | Tolerations for pods                                |
+| **affinity**                | Affinity for pods                                   |
 
 ### Lighthouse Beacon
 
