@@ -82,7 +82,7 @@ spec:
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:
-          - name: data
+          - name: data-{{ .network }}
             mountPath: /var/data
           - name: imported-keystores
             mountPath: /var/data/validators/imported

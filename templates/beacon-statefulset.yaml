@@ -73,7 +73,7 @@ spec:
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:
-          - name: data
+          - name: data-{{ .network }}
             mountPath: /var/data
       {{- with .nodeSelector }}
       nodeSelector:
