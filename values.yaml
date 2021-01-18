@@ -86,8 +86,8 @@ beacon:
 
   defaultArgs: [
     "lighthouse",
-    "--datadir", "/var/data",
     "beacon",
+    "--datadir", "/var/data",
     "--staking",
     "--metrics",
     "--http-address", "0.0.0.0",
@@ -134,6 +134,7 @@ beacon:
     runAsGroup: 1000
 
   service:
+    enabled: true
     type: NodePort
 
   hostPort:
@@ -170,8 +171,12 @@ validator:
 
   defaultArgs: [
     "lighthouse",
-    "--datadir", "/var/data",
     "validator",
+    # Without this, slashing_protection.sqlite could be missing. In context of K8S, you are not
+    # going to share the same volume anyway, so it shouldn't matter to have slashing_protection.sqlite
+    # or not
+    "--init-slashing-protection",
+    "--datadir", "/var/data",
     "--metrics",
     "--metrics-address", "0.0.0.0",
   ]
