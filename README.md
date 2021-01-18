@@ -26,7 +26,8 @@ To run ETH2 validator in a Kubernete cluster with this Helm chart, you will need
 You can run this command to create the keystore secret
 
 ```bash
-kubectl create secret generic eth2-validator-keystore --from-file=validator_keys/keystore-m_12381_3600_0_0_0-1610836528.json
+kubectl create secret generic eth2-validator-keystore \
+   --from-file=validator_keys/keystore-m_12381_3600_0_0_0-1610836528.json
 ```
 
 If you have multiple keystores, you can repeat the `--from-file` argument to specify different files, like this
