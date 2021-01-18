@@ -51,7 +51,8 @@ Since the keypairs in the keystore are encrypted, your validator will need the p
 with the password as its content. Once you have this file, you can then run
 
 ```bash
-kubectl create secret generic eth2-validator-password --from-file=0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a
+kubectl create secret generic eth2-validator-password \
+   --from-file=0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a
 ```
 
 This will create a Secret with key values like this:
@@ -59,6 +60,8 @@ This will create a Secret with key values like this:
 ```
 0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a: <password content>
 ```
+
+Likewise, if you have more than one validator to run, you can apply `--from-file=` multiple times.
 
 ## Install
 
