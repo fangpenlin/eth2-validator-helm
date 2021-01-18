@@ -90,6 +90,7 @@ beacon:
     "--datadir", "/var/data",
     "--staking",
     "--metrics",
+    "--disable-upnp",
     "--http-address", "0.0.0.0",
     "--metrics-address", "0.0.0.0",
   ]
