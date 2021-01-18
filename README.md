@@ -88,7 +88,7 @@ There are three components to be deployed with this Helm chart, they can be conf
 OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a third-party ETH1 provider, you can probably disable it. The configuration of OpenEthereum component is all under `openethereum` key.
 
 | Key                         | Usage                                               |
-|-----------------------------| --------------------------------------------------- |
+| --------------------------- | --------------------------------------------------- |
 | **enabled**                 | Enable component or not                             |
 | **defaultArgs**             | Default argument for running openethereum command   |
 | **extraArgs**               | Extra argument for running openethereum command     |
