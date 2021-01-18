@@ -88,6 +88,15 @@ helm install eth2-validator fangpen/eth2-validator \
    --set-string validator.network=mainnet
 ```
 
+## Networking and P2P connections
+
+While making your P2P connection ports available to public internet is not a hard requirement, but it's usually a recommendation. With this Helm chart, we use Kubernete's `hostPort` feature for opening the port on the node where the pod is scheduled. You will need to add new firewall rules in your network environment to make those ports accessiable from internet. These ports are
+
+- OpenEthereum: 9000 TCP/UDP
+- Lighthouse Beacon: 30303 TCP/UDP
+
+Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `openethereum.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you want to open these ports on nodes or you wish to use other approach for opening the ports, such as an external LoadBalancer.
+
 ## Configurations
 
 There are three components to be deployed with this Helm chart, they can be configured individually. Please check [values.yaml](values.yaml) for the default values.
