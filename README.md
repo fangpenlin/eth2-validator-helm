@@ -95,7 +95,7 @@ OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a
 | **persistent.enabled**      | Enable data persistent or not                       |
 | **persistent.accessModes**  | Access mode for PersistentVolume                    |
 | **persistent.size**         | Size of PersistentVolume                            |
-| **replicaCount**            | Replica count of deploymen                          |
+| **replicaCount**            | Replica count                                       |
 | **image.repository**        | Docker image repo                                   |
 | **image.tag**               | Docker image tag                                    |
 | **image.pullPolicy**        | Docker image polling policy                         |
@@ -116,10 +116,62 @@ OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a
 
 Lighthouse Beacon provides Beacon Chain service.
 
-TODO: config here
+The configuration of OpenEthereum component is all under `beacon` key.
+
+| Key                         | Usage                                               |
+| --------------------------- | --------------------------------------------------- |
+| **enabled**                 | Enable component or not                             |
+| **defaultArgs**             | Default argument for running lighthouse command     |
+| **extraArgs**               | Extra argument for running lighthouse command       |
+| **persistent.enabled**      | Enable data persistent or not                       |
+| **persistent.accessModes**  | Access mode for PersistentVolume                    |
+| **persistent.size**         | Size of PersistentVolume                            |
+| **replicaCount**            | Replica count                                       |
+| **image.repository**        | Docker image repo                                   |
+| **image.tag**               | Docker image tag                                    |
+| **image.pullPolicy**        | Docker image polling policy                         |
+| **network**                 | ETH network to connect to                           |
+| **imagePullSecrets**        | Image polling secret                                |
+| **serviceAccount.create**   | Create service account or not                       |
+| **serviceAccount.name**     | Name of service account if not using default        |
+| **podSecurityContext**      | Security group for pod                              |
+| **securityContext**         | Security context                                    |
+| **service.enabled**         | Enable Service or not                               |
+| **hostPort.enabled**        | Expose P2P ports or not                             |
+| **resources**               | Resource requirement and limitation                 |
+| **nodeSelector**            | Node selector for pods                              |
+| **tolerations**             | Tolerations for pods                                |
+| **affinity**                | Affinity for pods                                   |
 
 ### Lighthouse Validator
 
 Lighthouse Validator provides validator service.
 
-TODO: config here.
+The configuration of OpenEthereum component is all under `validator` key.
+
+| Key                         | Usage                                               |
+| --------------------------- | --------------------------------------------------- |
+| **enabled**                 | Enable component or not                             |
+| **defaultArgs**             | Default argument for running lighthouse command     |
+| **extraArgs**               | Extra argument for running lighthouse command       |
+| **persistent.enabled**      | Enable data persistent or not                       |
+| **persistent.accessModes**  | Access mode for PersistentVolume                    |
+| **persistent.size**         | Size of PersistentVolume                            |
+| **replicaCount**            | Replica count **DO NOT CHANGE VALUE TO OTHER THAN 1, YOU WILL GET SLASHED ** |
+| **image.repository**        | Docker image repo                                   |
+| **image.tag**               | Docker image tag                                    |
+| **image.pullPolicy**        | Docker image polling policy                         |
+| **network**                 | ETH network to connect to                           |
+| **imagePullSecrets**        | Image polling secret                                |
+| **serviceAccount.create**   | Create service account or not                       |
+| **serviceAccount.name**     | Name of service account if not using default        |
+| **podSecurityContext**      | Security group for pod                              |
+| **securityContext**         | Security context                                    |
+| **service.enabled**         | Enable Service or not                               |
+| **hostPort.enabled**        | Expose P2P ports or not                             |
+| **resources**               | Resource requirement and limitation                 |
+| **nodeSelector**            | Node selector for pods                              |
+| **tolerations**             | Tolerations for pods                                |
+| **affinity**                | Affinity for pods                                   |
+
+
