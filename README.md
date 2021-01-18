@@ -26,3 +26,24 @@ then
 helm install eth2-validator fangpen/eth2-validator
 ```
 
+## Configurations
+
+There are three components to be deployed with this Helm chart, they can be configured individually.
+
+### OpenEthereum
+
+OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a third-party ETH1 provider, you can probably disable it.
+
+TODO: config here
+
+### Lighthouse Beacon
+
+Lighthouse Beacon provides Beacon Chain service.
+
+TODO: config here
+
+### Lighthouse Validator
+
+Lighthouse Validator provides validator service.
+
+TODO: config here.
