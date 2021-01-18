@@ -37,7 +37,7 @@ kubectl create secret generic eth2-validator-keystore \
 
 Since the keypairs in the keystore are encrypted, your validator will need the password to decrypt it, so you also need to install your keystore password.
 
-**Please ensure there are proper access control to these secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validator once it's available**
+**WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validator once it's available**
 
 ## Install
 
