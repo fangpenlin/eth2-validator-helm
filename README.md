@@ -79,6 +79,15 @@ then
 helm install eth2-validator fangpen/eth2-validator
 ```
 
+Please notice that, by default the networks for ETH1 / ETH2 are `goerli` and `pyrmont`, if you want to run your validator against the main network, you can change the network configuration like this
+
+```bash
+helm install eth2-validator fangpen/eth2-validator \
+   --set-string openethereum.network=mainnet \
+   --set-string beacon.network=mainnet \
+   --set-string validator.network=mainnet
+```
+
 ## Configurations
 
 There are three components to be deployed with this Helm chart, they can be configured individually. Please check [values.yaml](values.yaml) for the default values.
