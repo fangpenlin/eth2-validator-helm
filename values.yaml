@@ -137,6 +137,22 @@ beacon:
     enabled: true
     type: NodePort
 
+  livenessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
+
   hostPort:
     # When hostPort is enabled, the 9000 p2p ports for TCP/UDP will be open on the node where
     # the pod lives. As a result, you won't be able to run two instances of beacon
@@ -223,6 +239,22 @@ validator:
   service:
     enabled: true
     type: ClusterIP
+
+  livenessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious

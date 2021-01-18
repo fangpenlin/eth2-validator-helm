@@ -66,19 +66,9 @@ spec:
               containerPort: 5064
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-            initialDelaySeconds: 30
-            failureThreshold: 5
-            periodSeconds: 10
+            {{- toYaml .livenessProbe | nindent 12 }}
           readinessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-            initialDelaySeconds: 30
-            failureThreshold: 5
-            periodSeconds: 10
+            {{- toYaml .readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .resources | nindent 12 }}
           volumeMounts:

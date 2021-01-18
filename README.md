@@ -131,6 +131,8 @@ OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a
 | **securityContext**         | Security context                                    |
 | **service.enabled**         | Enable Service or not                               |
 | **hostPort.enabled**        | Expose P2P ports or not                             |
+| **readinessProbe**          | Readiness probe                                     |
+| **livenessProbe**           | Liveness probe                                      |
 | **resources**               | Resource requirement and limitation                 |
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
@@ -163,6 +165,8 @@ The configuration of OpenEthereum component is all under `beacon` key.
 | **securityContext**         | Security context                                    |
 | **service.enabled**         | Enable Service or not                               |
 | **hostPort.enabled**        | Expose P2P ports or not                             |
+| **readinessProbe**          | Readiness probe                                     |
+| **livenessProbe**           | Liveness probe                                      |
 | **resources**               | Resource requirement and limitation                 |
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
@@ -195,9 +199,9 @@ The configuration of OpenEthereum component is all under `validator` key.
 | **securityContext**         | Security context                                    |
 | **service.enabled**         | Enable Service or not                               |
 | **hostPort.enabled**        | Expose P2P ports or not                             |
+| **readinessProbe**          | Readiness probe                                     |
+| **livenessProbe**           | Liveness probe                                      |
 | **resources**               | Resource requirement and limitation                 |
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
-
-
