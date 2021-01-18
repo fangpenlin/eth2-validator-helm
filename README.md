@@ -13,6 +13,8 @@ Please be advised that you should be fully aware of the risks of running a ETH2 
 
 ## Install validator keystore and password
 
+**WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validator once it's available**
+
 To run ETH2 validator in a Kubernete cluster with this Helm chart, you will need to install your keystore into the Kubernete cluster first. By default, two Secrets `eth2-validator-keystore` and `eth2-validator-password` are used for keeping the secret data. For example, say you just created a keystore with eth2deposit cli command, and the file structure looks like this
 
 ```
@@ -35,9 +37,28 @@ kubectl create secret generic eth2-validator-keystore \
   --from-file=validator_keys/keystore-01.json
 ```
 
-Since the keypairs in the keystore are encrypted, your validator will need the password to decrypt it, so you also need to install your keystore password.
+This will create a Kubernete Secret with content like
 
-**WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validator once it's available**
+```
+keystore-00.json: <keystore 00 json content>
+keystore-01.json: <keystore 00 json content>
+```
+
+Since the keypairs in the keystore are encrypted, your validator will need the password to decrypt it, so you also need to install your keystore password. You need to first create the file with your keystore password as its content, and name the file exactly as the public key of your validator. For example, my validator's public key is `0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a`, so I will create a file
+
+```0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a```
+
+with the password as its content. Once you have this file, you can then run
+
+```bash
+kubectl create secret generic eth2-validator-password --from-file=0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a
+```
+
+This will create a Secret with key values like this:
+
+```
+0xb8c7cdcaad73437a65125adfc3068bfc011122bac84edca77e9f41c6e6978f2c90579ff3e0170a434e80ba25a42b7e7a: <password content>
+```
 
 ## Install
 
