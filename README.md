@@ -87,17 +87,10 @@ There are three components to be deployed with this Helm chart, they can be conf
 
 OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a third-party ETH1 provider, you can probably disable it. The configuration of OpenEthereum component is all under `openethereum` key.
 
-+------------------------+------------------------------------------------+
 | Key                    | Usage                                          |
-+========================+================================================+
+|------------------------|------------------------------------------------|
 | enabled                | Enable component or not                        |
-+------------------------+------------------------------------------------+
-| enabled                | Enable component or not                        |
-+------------------------+------------------------------------------------+
-| enabled                | Enable component or not                        |
-+------------------------+------------------------------------------------+
-| enabled                | Enable component or not                        |
-+------------------------+------------------------------------------------+
+
 ### Lighthouse Beacon
 
 Lighthouse Beacon provides Beacon Chain service.
