@@ -40,9 +40,12 @@ spec:
           - |
             set -e
             cd /var/data/keystores/
+            echo "Importing keystores ..."
             for name in *.json; do
+              echo "Importing ${name} ..."
               mkdir /var/data/validators/imported/${name}
               cp $name /var/data/validators/imported/${name}/voting-keystore.json
+              echo "Imported ${name}"
             done
           volumeMounts:
           - name: keystores
