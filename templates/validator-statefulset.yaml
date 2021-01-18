@@ -15,11 +15,13 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ $root.Release.Name }}-validator
       app.kubernetes.io/instance: {{ $root.Release.Name }}
+      app.kubernetes.io/component: validator
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ $root.Release.Name }}-validator
         app.kubernetes.io/instance: {{ $root.Release.Name }}
+        app.kubernetes.io/component: validator
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:

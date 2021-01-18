@@ -15,11 +15,13 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ $root.Release.Name }}-beacon
       app.kubernetes.io/instance: {{ $root.Release.Name }}
+      app.kubernetes.io/component: beacon
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ $root.Release.Name }}-beacon
         app.kubernetes.io/instance: {{ $root.Release.Name }}
+        app.kubernetes.io/component: beacon
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:
