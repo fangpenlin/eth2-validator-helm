@@ -102,6 +102,24 @@ While making your P2P connection ports available to public internet is not a har
 
 Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `openethereum.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you don't want to open these ports on node or you wish to use other approach for opening the ports, such as an external LoadBalancer.
 
+To avoid scheduling pods using the same public host port on the same machine, you can use `affinity` configuration like this:
+
+```yaml
+beacon:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - beacon
+        topologyKey: kubernetes.io/hostname
+```
+
+In this case, beacon won't be schedule to machines where a beacon pod is already running there.
+
 ## Configurations
 
 There are three components to be deployed with this Helm chart, they can be configured individually. Please check [values.yaml](values.yaml) for the default values.
