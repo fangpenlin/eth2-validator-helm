@@ -5,7 +5,7 @@ Helm Chart for running ETH2 validator with OpenEthereum + Lighthouse on Kubernet
 
 If you like my work, donations are welcome, my ETH address:
 
-0x3a66eEcD83658154AeAD6fF900CC5C65Ab2f0890
+**0x3a66eEcD83658154AeAD6fF900CC5C65Ab2f0890**
 
 ## Disclaimer
 
