@@ -9,7 +9,7 @@ If you like my work, donations are welcome, my ETH address:
 
 ## Disclaimer
 
-Please be advised that you should be fully aware of the risks of running a ETH2 validator. It's also your sole responsibility to ensure adopting best security practices for your Kubernetes cluster and deployment. In other words, this is an open source software, the risk is on your on.
+Please be advised that you should be fully aware of the risks of running a ETH2 validator. It's also your sole responsibility to ensure adopting best security practices for your Kubernetes cluster and deployment. In other words, this is an open source software, the risk is on your own.
 
 ## Install validator keystore and password
 
