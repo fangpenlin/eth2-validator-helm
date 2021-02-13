@@ -205,7 +205,6 @@ The configuration of OpenEthereum component is all under `validator` key.
 | **persistent.accessModes**  | Access mode for PersistentVolume                    |
 | **persistent.size**         | Size of PersistentVolume                            |
 | **persistent.storageClassName** | Storage class of of PersistentVolume, SSD is recommended |
-| **replicaCount**            | Replica count **DO NOT CHANGE VALUE TO OTHER THAN 1, YOU WILL GET SLASHED** |
 | **image.repository**        | Docker image repo                                   |
 | **image.tag**               | Docker image tag                                    |
 | **image.pullPolicy**        | Docker image polling policy                         |

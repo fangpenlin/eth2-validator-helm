@@ -9,7 +9,11 @@ metadata:
   labels:
     {{- include "eth2-validator.labels" $root | nindent 4 }}
 spec:
-  replicas: {{ .replicaCount }}
+  # Notice: Cannot think of a good reason to run multiple instance of validator,
+  #         there's no easy way to coordinate between instances for a hot standby backup
+  #         at this moment, so it's better just fix this value here to avoid any future
+  #         silly mistake
+  replicas: 1
   serviceName: {{ $root.Release.Name }}-validator
   selector:
     matchLabels:

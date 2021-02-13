@@ -205,8 +205,6 @@ validator:
     size: 32Gi
     storageClassName: standard
 
-  replicaCount: 1
-
   image:
     repository: sigp/lighthouse
     tag: v1.0.6
