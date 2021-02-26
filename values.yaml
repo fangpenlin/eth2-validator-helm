@@ -75,6 +75,22 @@ openethereum:
     #   cpu: 100m
     #   memory: 128Mi
 
+  livenessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+    initialDelaySeconds: 30
+    failureThreshold: 5
+    periodSeconds: 10
+
   nodeSelector: {}
 
   tolerations: []
