@@ -23,7 +23,7 @@ openethereum:
 
   image:
     repository: openethereum/openethereum
-    tag: v3.1.1
+    tag: v3.3.5
     pullPolicy: IfNotPresent
 
   # The network to connect to
@@ -115,14 +115,14 @@ beacon:
   persistent:
     enabled: true
     accessModes: [ "ReadWriteOnce" ]
-    size: 128Gi
+    size: 256Gi
     storageClassName: standard
 
   replicaCount: 1
 
   image:
     repository: sigp/lighthouse
-    tag: v1.1.3
+    tag: v2.1.1
     pullPolicy: IfNotPresent
 
   # The network to connect to
@@ -223,7 +223,7 @@ validator:
 
   image:
     repository: sigp/lighthouse
-    tag: v1.1.3
+    tag: v2.1.1
     pullPolicy: IfNotPresent
 
   # The network to connect to
