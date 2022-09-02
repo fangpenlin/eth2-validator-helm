@@ -26,6 +26,9 @@ geth:
     tag: v1.10.23
     pullPolicy: IfNotPresent
 
+  # Name of JWT secret to use
+  jwtSecretName: "eth2-jwt-secret"
+
   # The network to connect to
   network: goerli
 
