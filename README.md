@@ -199,6 +199,7 @@ The configuration of geth component is all under `beacon` key.
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **jwtSecretName**           | Kubernetes Secret name for JWT auth secret, default to `eth2-jwt-secret` if not provided |
 | **executionEndpoint**       | Endpoint for execution layer service (eth client), by default the endpoint Geth deployed by this Helm will be used if not provided |
 
 ### Lighthouse Validator
@@ -235,4 +236,4 @@ The configuration of geth component is all under `validator` key.
 | **affinity**                | Affinity for pods                                   |
 | **keystoreSecretName**      | Keystore secret name, default to `eth2-validator-keystore` if not provided |
 | **passwordSecretName**      | Password secret name, default to `eth2-validator-password` if not provided |
-| **executionEndpoint**       | Endpoint for the beacon service, by default the endpoint of Beacon server deployed by this Helm will be used if not provided |
+| **beaconNodes**             | Endpoint for the beacon service, by default the endpoint of Beacon server deployed by this Helm will be used if not provided |

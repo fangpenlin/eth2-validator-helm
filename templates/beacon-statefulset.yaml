@@ -67,6 +67,9 @@ spec:
           volumeMounts:
           - name: data-{{ .network }}
             mountPath: /var/data
+          - name: jwt-secrets
+            mountPath: /var/secrets
+            readOnly: true
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -79,6 +82,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+      - name: jwt-secrets
+        secret:
+          secretName: {{ .jwtSecretName }}
   
   {{- if .persistent.enabled }}
   volumeClaimTemplates:

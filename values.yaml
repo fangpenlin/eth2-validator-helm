@@ -7,6 +7,8 @@ geth:
 
   defaultArgs: [
     "--datadir=/var/data/",
+    "--authrpc.addr=0.0.0.0",
+    "--authrpc.vhosts=*",
     "--authrpc.jwtsecret=/var/secrets/jwt-secret",
     "--metrics",
     "--metrics.addr=0.0.0.0",
@@ -26,7 +28,7 @@ geth:
     tag: v1.10.23
     pullPolicy: IfNotPresent
 
-  # Name of JWT secret to use
+  # Name of k8s secret to use for jwt secret
   jwtSecretName: "eth2-jwt-secret"
 
   # The network to connect to
@@ -112,6 +114,7 @@ beacon:
     "--disable-upnp",
     "--http-address", "0.0.0.0",
     "--metrics-address", "0.0.0.0",
+    "--execution-jwt", "/var/secrets/jwt-secret",
   ]
   extraArgs: []
 
@@ -128,8 +131,11 @@ beacon:
     tag: v2.1.1
     pullPolicy: IfNotPresent
 
+  # Name of k8s secret to use for jwt secret
+  jwtSecretName: "eth2-jwt-secret"
+
   # The network to connect to
-  network: pyrmont
+  network: goerli
 
   imagePullSecrets: []
   nameOverride: ""
@@ -230,7 +236,7 @@ validator:
     pullPolicy: IfNotPresent
 
   # The network to connect to
-  network: pyrmont
+  network: goerli
 
   imagePullSecrets: []
   nameOverride: ""
