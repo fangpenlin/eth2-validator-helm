@@ -11,6 +11,15 @@ If you like my work, donations are welcome, my ETH address:
 
 Please be advised that you should be fully aware of the risks of running a ETH2 validator. It's also your sole responsibility to ensure adopting best security practices for your Kubernetes cluster and deployment. In other words, this is an open source software, the risk is on your own.
 
+## Install Geth
+
+To install Geth, you need to create a secret with name `eth2-jwt-secret` for JSON-API JWT authentication first.
+You can do it by running the following command:
+
+```bash
+kubectl create secret generic eth2-jwt-secret --from-literal=jwt-secret=$(openssl rand -hex 32)
+```
+
 ## Install validator keystore and password
 
 **WARNING: Please ensure proper access control is used for those Secrets, anyone who has access to these can get your private keypairs from the keystore and withdraw fund from your validators once it's available**
@@ -155,6 +164,7 @@ Geth provides the execution service endpoint for Beacon. You can disable it and 
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **jwtSecretName**           | Kubernetes Secret name for JWT auth secret, default to `eth2-jwt-secret` if not provided |
 
 ### Lighthouse Beacon
 
@@ -223,4 +233,6 @@ The configuration of geth component is all under `validator` key.
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **keystoreSecretName**      | Keystore secret name, default to `eth2-validator-keystore` if not provided |
+| **passwordSecretName**      | Password secret name, default to `eth2-validator-password` if not provided |
 | **executionEndpoint**       | Endpoint for the beacon service, by default the endpoint of Beacon server deployed by this Helm will be used if not provided |

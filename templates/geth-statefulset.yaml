@@ -24,8 +24,6 @@ spec:
         app.kubernetes.io/name: {{ $root.Release.Name }}-geth
         app.kubernetes.io/instance: {{ $root.Release.Name }}
         app.kubernetes.io/component: geth
-      annotations:
-        checksum/geth-secret: {{ include (print $.Template.BasePath "/geth-secret.yaml") $root | sha256sum }}
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:
@@ -71,7 +69,7 @@ spec:
           volumeMounts:
           - name: data-{{ .network }}
             mountPath: /var/data
-          - name: geth-secrets
+          - name: jwt-secrets
             mountPath: /var/secrets
             readOnly: true
       {{- with .nodeSelector }}
@@ -87,9 +85,9 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-      - name: geth-secrets
+      - name: jwt-secrets
         secret:
-          secretName: {{ $root.Release.Name }}-geth
+          secretName: {{ .jwtSecretName }}
   {{- if .persistent.enabled }}
   volumeClaimTemplates:
   - metadata:
