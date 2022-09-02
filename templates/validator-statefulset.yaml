@@ -65,7 +65,9 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--beacon-nodes" (.beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name))) }}
+            {{- $beaconNodes := .beaconNodes | default (printf "http://%s-beacon:5052" $root.Release.Name) -}}
+            {{- $feeRecipient := ( required ".validator.suggestedFeeRecipient is required" .suggestedFeeRecipient ) -}}
+            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--beacon-nodes" $beaconNodes "--suggested-fee-recipient" $feeRecipient) -}}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http

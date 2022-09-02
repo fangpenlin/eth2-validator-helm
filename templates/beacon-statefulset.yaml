@@ -37,7 +37,9 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--execution-endpoint" (.executionEndpoint | default (printf "http://%s-geth:8551" $root.Release.Name))) }}
+            {{- $executionEndpoint := .executionEndpoint | default (printf "http://%s-geth:8551" $root.Release.Name) -}}
+            {{- $feeRecipient := ( required ".validator.suggestedFeeRecipient is required" .suggestedFeeRecipient ) -}}
+            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--execution-endpoint" $executionEndpoint "--suggested-fee-recipient" $feeRecipient) -}}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
