@@ -1,50 +1,50 @@
 {{- $root := . }}
 
-{{- with .Values.openethereum }}
+{{- with .Values.geth }}
 {{- if .enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ $root.Release.Name }}-openethereum
+  name: {{ $root.Release.Name }}-geth
   labels:
     {{- include "eth2-validator.labels" $root | nindent 4 }}
 spec:
   replicas: {{ .replicaCount }}
-  serviceName: {{ $root.Release.Name }}-openethereum
+  serviceName: {{ $root.Release.Name }}-geth
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+      app.kubernetes.io/name: {{ $root.Release.Name }}-geth
       app.kubernetes.io/instance: {{ $root.Release.Name }}
-      app.kubernetes.io/component: openethereum
+      app.kubernetes.io/component: geth
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ $root.Release.Name }}-openethereum
+        app.kubernetes.io/name: {{ $root.Release.Name }}-geth
         app.kubernetes.io/instance: {{ $root.Release.Name }}
-        app.kubernetes.io/component: openethereum
+        app.kubernetes.io/component: geth
     spec:
     {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "eth2-validator.openethereum.serviceAccountName" $root }}
+      serviceAccountName: {{ include "eth2-validator.geth.serviceAccountName" $root }}
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
       containers:
-        - name: openethereum
+        - name: geth
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := concat .defaultArgs .extraArgs (list "--chain" .network) }}
+            {{- $args := concat .defaultArgs .extraArgs (list (printf "--%s" .network)) }}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: jsonrpc
-              containerPort: 8545
+              containerPort: 8551
               protocol: TCP
             - name: metrics
-              containerPort: 3000
+              containerPort: 6060
               protocol: TCP
             - name: p2p-tcp
               containerPort: 30303

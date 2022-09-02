@@ -1,18 +1,18 @@
-{{- if .Values.openethereum.service.enabled -}}
+{{- if .Values.geth.service.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-openethereum
+  name: {{ .Release.Name }}-geth
   labels:
     {{- include "eth2-validator.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.openethereum.service.type }}
+  type: {{ .Values.geth.service.type }}
   ports:
-    - port: 8545
+    - port: 8551
       targetPort: jsonrpc
       protocol: TCP
       name: jsonrpc
   selector:
-    app.kubernetes.io/name: {{ .Release.Name }}-openethereum
+    app.kubernetes.io/name: {{ .Release.Name }}-geth
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

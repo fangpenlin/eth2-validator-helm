@@ -2,14 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-openethereum:
+geth:
   enabled: true
 
   defaultArgs: [
-    "--jsonrpc-interface=all",
     "--metrics",
-    "--metrics-interface=all",
-    "--base-path=/var/data/"
+    "--datadir=/var/data/"
   ]
   extraArgs: []
 
@@ -22,8 +20,8 @@ openethereum:
   replicaCount: 1
 
   image:
-    repository: openethereum/openethereum
-    tag: v3.3.5
+    repository: geth/geth
+    tag: v1.10.23
     pullPolicy: IfNotPresent
 
   # The network to connect to
@@ -57,7 +55,7 @@ openethereum:
 
   hostPort:
     # When hostPort is enabled, the 30303 p2p ports for TCP/UDP will be open on the node where
-    # the pod lives. As a result, you won't be able to run two instances of openethereum
+    # the pod lives. As a result, you won't be able to run two instances of geth
     # on the same node. In that case, you would probably want to use affinity to avoid
     # schedule two of them on the same host. Also, you need to configure your network firewall
     # rule to allow 30303 port access

@@ -37,7 +37,7 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--eth1-endpoints" (.eth1Endpoints | default (printf "http://%s-openethereum:8545" $root.Release.Name))) }}
+            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--execution-endpoint" (.executionEndpoint | default (printf "http://%s-geth:8551" $root.Release.Name))) }}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
