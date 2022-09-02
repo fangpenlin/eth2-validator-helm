@@ -47,11 +47,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "eth2-validator.openethereum.serviceAccountName" -}}
-{{- if .Values.openethereum.serviceAccount.create -}}
-    {{ default (printf "%s-openethereum" (include "eth2-validator.fullname" .)) .Values.openethereum.serviceAccount.name }}
+{{- define "eth2-validator.geth.serviceAccountName" -}}
+{{- if .Values.geth.serviceAccount.create -}}
+    {{ default (printf "%s-geth" (include "eth2-validator.fullname" .)) .Values.geth.serviceAccount.name }}
 {{- else -}}
-    {{ default "default" .Values.openethereum.serviceAccount.name }}
+    {{ default "default" .Values.geth.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 

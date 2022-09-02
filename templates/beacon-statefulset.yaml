@@ -37,7 +37,9 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           args:
-            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--eth1-endpoints" (.eth1Endpoints | default (printf "http://%s-openethereum:8545" $root.Release.Name))) }}
+            {{- $executionEndpoint := .executionEndpoint | default (printf "http://%s-geth:8551" $root.Release.Name) -}}
+            {{- $feeRecipient := ( required ".validator.suggestedFeeRecipient is required" .suggestedFeeRecipient ) -}}
+            {{- $args := concat .defaultArgs .extraArgs (list "--network" .network "--execution-endpoint" $executionEndpoint "--suggested-fee-recipient" $feeRecipient) -}}
             {{- toYaml $args | nindent 12 }}
           ports:
             - name: http
@@ -67,6 +69,9 @@ spec:
           volumeMounts:
           - name: data-{{ .network }}
             mountPath: /var/data
+          - name: jwt-secrets
+            mountPath: /var/secrets
+            readOnly: true
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -79,6 +84,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+      - name: jwt-secrets
+        secret:
+          secretName: {{ .jwtSecretName }}
   
   {{- if .persistent.enabled }}
   volumeClaimTemplates:

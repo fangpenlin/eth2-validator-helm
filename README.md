@@ -1,5 +1,5 @@
 # eth2-validator-helm
-Helm Chart for running [ETH2 validator](https://ethereum.org/en/eth2/staking/) with [OpenEthereum](https://openethereum.org/) + [Lighthouse](https://lighthouse.sigmaprime.io/) on Kubernete cluster under MIT license.
+Helm Chart for running [ETH2 validator](https://ethereum.org/en/eth2/staking/) with [geth](https://geth.org/) + [Lighthouse](https://lighthouse.sigmaprime.io/) on Kubernete cluster under MIT license.
 
 ## Donation
 
@@ -10,6 +10,15 @@ If you like my work, donations are welcome, my ETH address:
 ## Disclaimer
 
 Please be advised that you should be fully aware of the risks of running a ETH2 validator. It's also your sole responsibility to ensure adopting best security practices for your Kubernetes cluster and deployment. In other words, this is an open source software, the risk is on your own.
+
+## Install Geth
+
+To install Geth, you need to create a secret with name `eth2-jwt-secret` for JSON-API JWT authentication first.
+You can do it by running the following command:
+
+```bash
+kubectl create secret generic eth2-jwt-secret --from-literal=jwt-secret=$(openssl rand -hex 32)
+```
 
 ## Install validator keystore and password
 
@@ -88,7 +97,7 @@ Please notice that, by default the networks for ETH1 / ETH2 are `goerli` and `py
 
 ```bash
 helm install eth2-validator fangpen/eth2-validator \
-   --set-string openethereum.network=mainnet \
+   --set-string geth.network=mainnet \
    --set-string beacon.network=mainnet \
    --set-string validator.network=mainnet
 ```
@@ -97,10 +106,10 @@ helm install eth2-validator fangpen/eth2-validator \
 
 While making your P2P connection ports available to public internet is not a hard requirement, but it's usually a recommendation. With this Helm chart, we use Kubernete's `hostPort` feature for opening the port on the node where the pod is scheduled. You will need to add new firewall rules in your network environment to make those ports accessiable from internet. These ports are
 
-- OpenEthereum: 30303 TCP/UDP
+- Geth: 30303 TCP/UDP
 - Lighthouse Beacon: 9000 TCP/UDP
 
-Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `openethereum.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you don't want to open these ports on node or you wish to use other approach for opening the ports, such as an external LoadBalancer.
+Please note that, `hostPort` is enabled by default and it comes with some drawbacks. By using `hostPort`, it means pods using the same host port can only be scheduled on different nodes. You can set `geth.hostPort.enabled=false` and `beacon.hostPort.enabled=false` to disable them if you don't want to open these ports on node or you wish to use other approach for opening the ports, such as an external LoadBalancer.
 
 To avoid scheduling pods using the same public host port on the same machine, you can use `affinity` configuration like this:
 
@@ -124,15 +133,15 @@ In this case, beacon won't be schedule to machines where a beacon pod is already
 
 There are three components to be deployed with this Helm chart, they can be configured individually. Please check [values.yaml](values.yaml) for the default values.
 
-### OpenEthereum
+### Geth
 
-OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a third-party ETH1 provider, you can probably disable it. The configuration of OpenEthereum component is all under `openethereum` key.
+Geth provides the execution service endpoint for Beacon. You can disable it and run your own if you want. The configuration of geth component is all under `geth` key.
 
 | Key                         | Usage                                               |
 | --------------------------- | --------------------------------------------------- |
 | **enabled**                 | Enable component or not                             |
-| **defaultArgs**             | Default argument for running openethereum command   |
-| **extraArgs**               | Extra argument for running openethereum command     |
+| **defaultArgs**             | Default argument for running geth command           |
+| **extraArgs**               | Extra argument for running geth command             |
 | **persistent.enabled**      | Enable data persistent or not                       |
 | **persistent.accessModes**  | Access mode for PersistentVolume                    |
 | **persistent.size**         | Size of PersistentVolume                            |
@@ -155,12 +164,13 @@ OpenEthereum provides the ETH1 service endpoint for Beacon. If you want to use a
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **jwtSecretName**           | Kubernetes Secret name for JWT auth secret, default to `eth2-jwt-secret` if not provided |
 
 ### Lighthouse Beacon
 
 Lighthouse Beacon provides Beacon Chain service.
 
-The configuration of OpenEthereum component is all under `beacon` key.
+The configuration of geth component is all under `beacon` key.
 
 | Key                         | Usage                                               |
 | --------------------------- | --------------------------------------------------- |
@@ -189,12 +199,15 @@ The configuration of OpenEthereum component is all under `beacon` key.
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **jwtSecretName**           | Kubernetes Secret name for JWT auth secret, default to `eth2-jwt-secret` if not provided |
+| **executionEndpoint**       | Endpoint for execution layer service (eth client), by default the endpoint Geth deployed by this Helm will be used if not provided |
+| **suggestedFeeRecipient**   | Ethereum address for transaction fee recipient      |
 
 ### Lighthouse Validator
 
 Lighthouse Validator provides validator service.
 
-The configuration of OpenEthereum component is all under `validator` key.
+The configuration of geth component is all under `validator` key.
 
 | Key                         | Usage                                               |
 | --------------------------- | --------------------------------------------------- |
@@ -222,3 +235,7 @@ The configuration of OpenEthereum component is all under `validator` key.
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
+| **keystoreSecretName**      | Keystore secret name, default to `eth2-validator-keystore` if not provided |
+| **passwordSecretName**      | Password secret name, default to `eth2-validator-password` if not provided |
+| **beaconNodes**             | Endpoint for the beacon service, by default the endpoint of Beacon server deployed by this Helm will be used if not provided |
+| **suggestedFeeRecipient**   | Ethereum address for transaction fee recipient      |
