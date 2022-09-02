@@ -189,7 +189,7 @@ The configuration of geth component is all under `beacon` key.
 | **nodeSelector**            | Node selector for pods                              |
 | **tolerations**             | Tolerations for pods                                |
 | **affinity**                | Affinity for pods                                   |
-| **executionEndpoint**       | Endpoint for execution layer service (eth client), by default the endpoint Gether deployed by this Helm will be used if not provided |
+| **executionEndpoint**       | Endpoint for execution layer service (eth client), by default the endpoint Geth deployed by this Helm will be used if not provided |
 
 ### Lighthouse Validator
 

@@ -6,8 +6,10 @@ geth:
   enabled: true
 
   defaultArgs: [
+    "--datadir=/var/data/",
+    "--authrpc.jwtsecret=/var/secrets/jwt-secret",
     "--metrics",
-    "--datadir=/var/data/"
+    "--metrics.addr=0.0.0.0",
   ]
   extraArgs: []
 
@@ -20,7 +22,7 @@ geth:
   replicaCount: 1
 
   image:
-    repository: geth/geth
+    repository: ethereum/client-go
     tag: v1.10.23
     pullPolicy: IfNotPresent
 
@@ -75,17 +77,17 @@ geth:
 
   livenessProbe:
     httpGet:
-      path: /metrics
+      path: /debug/metrics/prometheus
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
   readinessProbe:
     httpGet:
-      path: /metrics
+      path: /debug/metrics/prometheus
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
@@ -156,7 +158,7 @@ beacon:
     httpGet:
       path: /metrics
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
@@ -164,7 +166,7 @@ beacon:
     httpGet:
       path: /metrics
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
@@ -257,7 +259,7 @@ validator:
     httpGet:
       path: /metrics
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
@@ -265,7 +267,7 @@ validator:
     httpGet:
       path: /metrics
       port: metrics
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
 
